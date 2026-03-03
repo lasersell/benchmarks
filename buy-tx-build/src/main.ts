@@ -15,7 +15,7 @@ async function main() {
     { name: "LaserSell API", create: () => createLasersellMethod(config) },
     { name: "PumpFun SDK", create: () => createPumpFunMethod(config) },
     { name: "PumpPortal API", create: () => createPumpPortalMethod(config) },
-    { name: "Jupiter API", create: () => createJupiterMethod(config) },
+    { name: "Jupiter's Metis API", create: () => createJupiterMethod(config) },
   ];
 
   const methods: Array<{ method: BenchmarkMethod | null; name: string }> = [];

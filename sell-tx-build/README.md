@@ -7,7 +7,7 @@ Compares the latency of **building** (not sending) an unsigned Solana sell trans
 | **LaserSell API** | Single API call to the LaserSell exit API |
 | **PumpFun SDK** | Full local build: bonding curve + global state + mint info via RPC, then local instruction assembly |
 | **PumpPortal API** | Single API call to pumpportal.fun |
-| **Jupiter API** | Two API calls: quote + swap to Jupiter |
+| **Jupiter's Metis API** | Two API calls: quote + swap to Jupiter |
 
 All methods target the same Pump.fun token for a fair comparison.
 
@@ -57,12 +57,12 @@ Amount:     1000000 tokens (smallest units)
 Slippage:   2000 bps (20%)
 Iterations: 5 (+ 1 warmup)
 
-┌──────────────────┬─────────┬─────────┬─────────┬─────────┬─────────────────────────┐
-│ Method           │  Avg ms │  Min ms │  Max ms │  Med ms │ Runs (ms)               │
-├──────────────────┼─────────┼─────────┼─────────┼─────────┼─────────────────────────┤
-│ LaserSell API    │   42.15 │   38.90 │   48.33 │   41.20 │ 48.33 38.90 41.20 ...  │
-│ PumpFun SDK      │  910.22 │  830.11 │  995.44 │  890.33 │ ...                     │
-│ PumpPortal API   │  228.44 │  205.22 │  255.11 │  225.33 │ ...                     │
-│ Jupiter API      │  305.67 │  285.33 │  330.11 │  300.45 │ ...                     │
-└──────────────────┴─────────┴─────────┴─────────┴─────────┴─────────────────────────┘
+┌─────────────────────┬─────────┬─────────┬─────────┬─────────┬─────────────────────────┐
+│ Method              │  Avg ms │  Min ms │  Max ms │  Med ms │ Runs (ms)               │
+├─────────────────────┼─────────┼─────────┼─────────┼─────────┼─────────────────────────┤
+│ LaserSell API       │   42.15 │   38.90 │   48.33 │   41.20 │ 48.33 38.90 41.20 ...  │
+│ PumpFun SDK         │  910.22 │  830.11 │  995.44 │  890.33 │ ...                     │
+│ PumpPortal API      │  228.44 │  205.22 │  255.11 │  225.33 │ ...                     │
+│ Jupiter's Metis API │  305.67 │  285.33 │  330.11 │  300.45 │ ...                     │
+└─────────────────────┴─────────┴─────────┴─────────┴─────────┴─────────────────────────┘
 ```

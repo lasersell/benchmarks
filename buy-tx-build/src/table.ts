@@ -18,7 +18,7 @@ const METHOD_NOTES: Record<string, string> = {
   "LaserSell API": "Single API call (network latency to LaserSell server)",
   "PumpFun SDK": "Local build + RPC calls (bonding curve, global state, mint info)",
   "PumpPortal API": "Single API call (network latency to pumpportal.fun)",
-  "Jupiter API": "Two API calls: quote + swap (network latency to Jupiter servers)",
+  "Jupiter's Metis API": "Two API calls: quote + swap (network latency to Jupiter servers)",
 };
 
 export function printResults(config: Config, results: BenchmarkResult[]): void {
@@ -33,7 +33,7 @@ export function printResults(config: Config, results: BenchmarkResult[]): void {
   console.log();
 
   // Column widths
-  const colMethod = 18;
+  const colMethod = 21;
   const colStat = 9;
   const colTx = 6;
   const colRuns = 25;
