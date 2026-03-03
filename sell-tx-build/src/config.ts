@@ -71,7 +71,7 @@ export function loadConfig(): Config {
     wallet,
     amountTokens: parseInt(cliArg("amount") ?? process.env["BENCH_AMOUNT_TOKENS"] ?? "1000000", 10),
     slippageBps: parseInt(cliArg("slippage-bps") ?? process.env["BENCH_SLIPPAGE_BPS"] ?? "2000", 10),
-    iterations: parseInt(cliArg("iterations") ?? process.env["BENCH_ITERATIONS"] ?? "5", 10),
+    iterations: parseInt(cliArg("iterations") ?? process.env["BENCH_ITERATIONS"] ?? "20", 10),
     warmup: parseInt(cliArg("warmup") ?? process.env["BENCH_WARMUP"] ?? "1", 10),
     rpcUrl: process.env["RPC_URL"] || undefined,
     jupiterApiKey: process.env["JUPITER_API_KEY"] || undefined,
