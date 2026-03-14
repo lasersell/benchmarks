@@ -13,7 +13,7 @@ async function main() {
 
   const factories: Array<{ create: () => BenchmarkMethod | null; name: string }> = [
     { name: "LaserSell API", create: () => createLasersellMethod(config) },
-    { name: "PumpFun SDK", create: () => createPumpFunMethod(config) },
+{ name: "PumpFun SDK", create: () => createPumpFunMethod(config) },
     { name: "PumpPortal API", create: () => createPumpPortalMethod(config) },
     { name: "Jupiter's Metis API", create: () => createJupiterMethod(config) },
   ];

@@ -8,7 +8,7 @@
     "bench": "node dist/main.js"
   },
   "dependencies": {
-    "@lasersell/lasersell-sdk": "^0.2.3",
+    "@lasersell/lasersell-sdk": "^1.0.4",
     "@pump-fun/pump-sdk": "^1.22.1",
     "@solana/web3.js": "^1.98.2",
     "@solana/spl-token": "^0.4.13",

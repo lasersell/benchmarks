@@ -4,7 +4,7 @@ import type { Config } from "../config.js";
 import type { BenchmarkMethod, TxInfo } from "../runner.js";
 
 export function createLasersellMethod(config: Config): BenchmarkMethod {
-  const client = ExitApiClient.withOptions(undefined, {
+  const client = ExitApiClient.withOptions(config.lasersellApiKey, {
     retry_policy: {
       max_attempts: 1,
       initial_backoff_ms: 0,

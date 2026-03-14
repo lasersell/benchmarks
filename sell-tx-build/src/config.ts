@@ -10,6 +10,7 @@ export interface Config {
   warmup: number;
   rpcUrl: string | undefined;
   jupiterApiKey: string | undefined;
+  lasersellApiKey: string | undefined;
 }
 
 /** Load .env file into process.env (simple key=value parser, no dependency). */
@@ -75,5 +76,6 @@ export function loadConfig(): Config {
     warmup: parseInt(cliArg("warmup") ?? process.env["BENCH_WARMUP"] ?? "1", 10),
     rpcUrl: process.env["RPC_URL"] || undefined,
     jupiterApiKey: process.env["JUPITER_API_KEY"] || undefined,
+    lasersellApiKey: process.env["LASERSELL_API_KEY"] || undefined,
   };
 }
