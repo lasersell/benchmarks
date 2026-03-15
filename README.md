@@ -4,9 +4,41 @@ Open-source benchmarks comparing Solana transaction build latency across LaserSe
 
 ## Benchmark Results
 
-Ran locally on a MacBook Pro. Each method got 1 warmup run (discarded) followed by 20 timed iterations, with a 2s delay between runs. All tests used the exact same RPC and token to eliminate variables.
+### From the Exit Intelligence Stream server
 
-**Buy transaction build** (0.01 SOL, 20% slippage):
+TX build time as experienced by [Exit Intelligence Stream](https://www.lasersell.io) users. When the stream detects an exit condition, it calls the LaserSell API over the co-located network to build the sell transaction. This is the latency that matters for automated exits.
+
+**Buy transaction build** (0.01 SOL, 20% slippage, 20 iterations):
+
+```
+┌───────────────────────┬───────────┬───────────┬───────────┬───────────┬────────┬───────────────────────────┐
+│ Method                │    Avg ms │    Min ms │    Max ms │    Med ms │     Ix │ Runs (ms)                 │
+├───────────────────────┼───────────┼───────────┼───────────┼───────────┼────────┼───────────────────────────┤
+│ LaserSell API         │      4.53 │      3.39 │      6.84 │      4.10 │      4 │ 5.62 5.30 5.22 6.05 4.... │
+│ PumpFun SDK           │    123.34 │    103.46 │    208.71 │    118.24 │      2 │ 134.12 208.71 108.90 1... │
+│ PumpPortal API        │     65.24 │     26.18 │    264.29 │     46.34 │      4 │ 42.67 264.29 63.65 46.... │
+│ Jupiter's Metis API   │     95.03 │     79.30 │    115.76 │     93.73 │      8 │ 96.66 90.61 93.75 105.... │
+└───────────────────────┴───────────┴───────────┴───────────┴───────────┴────────┴───────────────────────────┘
+```
+
+**Sell transaction build** (1000000 tokens, 20% slippage, 20 iterations):
+
+```
+┌───────────────────────┬───────────┬───────────┬───────────┬───────────┬────────┬───────────────────────────┐
+│ Method                │    Avg ms │    Min ms │    Max ms │    Med ms │     Ix │ Runs (ms)                 │
+├───────────────────────┼───────────┼───────────┼───────────┼───────────┼────────┼───────────────────────────┤
+│ LaserSell API         │      5.32 │      3.38 │     15.03 │      4.46 │      3 │ 15.03 6.13 5.45 6.77 4... │
+│ PumpFun SDK           │    120.81 │     96.53 │    143.23 │    121.65 │      1 │ 143.23 133.76 129.98 1... │
+│ PumpPortal API        │     80.74 │     27.75 │    576.28 │     38.18 │      4 │ 114.24 32.96 27.75 37.... │
+│ Jupiter's Metis API   │    168.84 │    159.10 │    177.35 │    169.11 │      5 │ 159.10 177.10 169.60 1... │
+└───────────────────────┴───────────┴───────────┴───────────┴───────────┴────────┴───────────────────────────┘
+```
+
+### From a MacBook Pro (public internet)
+
+Standard API latency over the public internet for comparison.
+
+**Buy transaction build** (0.01 SOL, 20% slippage, 20 iterations):
 
 ```
 ┌───────────────────────┬───────────┬───────────┬───────────┬───────────┬────────┬───────────────────────────┐
@@ -19,7 +51,7 @@ Ran locally on a MacBook Pro. Each method got 1 warmup run (discarded) followed 
 └───────────────────────┴───────────┴───────────┴───────────┴───────────┴────────┴───────────────────────────┘
 ```
 
-**Sell transaction build** (1000000 tokens, 20% slippage):
+**Sell transaction build** (1000000 tokens, 20% slippage, 20 iterations):
 
 ```
 ┌───────────────────────┬───────────┬───────────┬───────────┬───────────┬────────┬───────────────────────────┐
@@ -36,10 +68,10 @@ Ran locally on a MacBook Pro. Each method got 1 warmup run (discarded) followed 
 
 | Method | Build approach |
 |--------|---------------|
-| **LaserSell API** | Single API call — server builds the transaction |
-| **PumpFun SDK** | Local build — multiple RPC calls for on-chain state, then local instruction assembly |
+| **LaserSell API** | Single API call. Server builds the transaction |
+| **PumpFun SDK** | Local build. Multiple RPC calls for on-chain state, then local instruction assembly |
 | **PumpPortal API** | Single API call to pumpportal.fun |
-| **Jupiter's Metis API** | Two API calls — quote then swap |
+| **Jupiter's Metis API** | Two API calls. Quote then swap |
 
 ## Setup
 
@@ -53,10 +85,11 @@ Fill in your `.env`:
 |-----|-------------|------------|
 | `BENCH_MINT` | All methods | Any Pump.fun token mint address |
 | `BENCH_WALLET` | All methods | Your wallet pubkey (read-only, no signing) |
+| `LASERSELL_API_KEY` | LaserSell API | Your LaserSell API key |
 | `RPC_URL` | PumpFun SDK | Any Solana RPC provider (Helius, Triton, etc.) |
 | `JUPITER_API_KEY` | Jupiter | Free at [portal.jup.ag](https://portal.jup.ag) |
 
-LaserSell and PumpPortal need no API key. Methods auto-skip if their required key is missing.
+PumpPortal needs no API key. Methods auto-skip if their required key is missing.
 
 ## Buy Transaction Build
 
@@ -76,8 +109,8 @@ npm run bench -- --mint <MINT> --wallet <PUBKEY> --amount 0.05 --iterations 10
 
 | Option | Env var | Default |
 |--------|---------|---------|
-| `--mint` | `BENCH_MINT` | — (required) |
-| `--wallet` | `BENCH_WALLET` | — (required) |
+| `--mint` | `BENCH_MINT` | (required) |
+| `--wallet` | `BENCH_WALLET` | (required) |
 | `--amount` | `BENCH_AMOUNT_SOL` | `0.01` |
 | `--slippage-bps` | `BENCH_SLIPPAGE_BPS` | `2000` (20%) |
 | `--iterations` | `BENCH_ITERATIONS` | `20` |
@@ -101,8 +134,8 @@ npm run bench -- --mint <MINT> --wallet <PUBKEY> --amount 5000000 --iterations 1
 
 | Option | Env var | Default |
 |--------|---------|---------|
-| `--mint` | `BENCH_MINT` | — (required) |
-| `--wallet` | `BENCH_WALLET` | — (required) |
+| `--mint` | `BENCH_MINT` | (required) |
+| `--wallet` | `BENCH_WALLET` | (required) |
 | `--amount` | `BENCH_AMOUNT_TOKENS` | `1000000` (smallest units) |
 | `--slippage-bps` | `BENCH_SLIPPAGE_BPS` | `2000` (20%) |
 | `--iterations` | `BENCH_ITERATIONS` | `20` |
